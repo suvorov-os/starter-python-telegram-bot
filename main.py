@@ -37,8 +37,8 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
 
     if text == "/start":
         with open('hello.gif', 'rb') as photo:
-           # await bot.send_photo(chat_id=chat_id, photo=photo)
-        await bot.send_message(chat_id=chat_id, text="Ответьте на приведённые вопросы. Время не ограничено, однако те, кто уложится в 60 минут, получат дополнительные баллы к результату")
+            await bot.send_photo(chat_id=chat_id, photo=photo)
+        await bot.send_message(chat_id=chat_id, text="Please answer to my questions")
     else:
         await bot.send_message(chat_id=chat_id, reply_to_message_id=update.message["message_id"], text="Yo!")
 
