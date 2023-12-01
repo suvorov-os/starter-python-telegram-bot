@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import os
 from dotenv import load_dotenv
 from fastapi import FastAPI, Header, HTTPException, Depends
@@ -38,7 +39,7 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
     if text == "/start":
         with open('hello.gif', 'rb') as photo:
             await bot.send_photo(chat_id=chat_id, photo=photo)
-        await bot.send_message(chat_id=chat_id, text="Please answer to my questions")
+        await bot.send_message(chat_id=chat_id, text="Пожалуйста, ответьте на вопросы")
     else:
         await bot.send_message(chat_id=chat_id, reply_to_message_id=update.message["message_id"], text="Yo!")
 
