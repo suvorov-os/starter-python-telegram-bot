@@ -55,9 +55,8 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
     text = update.message["text"]
     #usname = update.message.from_user.username
     # print("Received message:", update.message)
-    button_hi = KeyboardButton('Привет! 👋')
-    greet_kb = ReplyKeyboardMarkup()
-    greet_kb.add(button_hi)
+    my_keyboard = [['ES', 'EN']]
+    my_reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True,resize_keyboard=True)
 
     if text == "/start":
         quest_state=STATE_NAME
@@ -68,7 +67,7 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
         quest_state=quest_state+1
         if quest_state==STATE_GROUP:
             student_name=text
-            await bot.send_message(chat_id=chat_id, text=student_name+", введите группу", reply_markup=kb.greet_kb)
+            await bot.send_message(chat_id=chat_id, text=student_name+", введите группу", reply_markup=my_reply_markup)
         elif quest_state==STATE_Q1:
             await bot.send_message(chat_id=chat_id, text="Первый вопрос")
 			
