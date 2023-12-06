@@ -56,7 +56,7 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
     #usname = update.message.from_user.username
     # print("Received message:", update.message)
     my_keyboard = [['ES', 'EN']]
-    my_reply_markup = ReplyKeyboardMarkup(keyboard, one_time_keyboard=True,resize_keyboard=True)
+    my_reply_markup = ReplyKeyboardMarkup(my_keyboard, one_time_keyboard=True,resize_keyboard=True)
 
     if text == "/start":
         quest_state=STATE_NAME
