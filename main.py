@@ -62,10 +62,13 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
             #await bot.send_photo(chat_id=chat_id, photo=photo)
         await bot.send_message(chat_id=chat_id, text="2 аттестация. Пересдача.\n Введите фамилию.")
     else:
-        quest_state==quest_state+1
+        quest_state=quest_state+1
         if quest_state==STATE_GROUP:
             student_name=text
-            await bot.send_message(chat_id=chat_id, reply_to_message_id=update.message["message_id"], text=student_name)
+            await bot.send_message(chat_id=chat_id, text=student_name+", введите группу")
+        elif quest_state==STATE_Q1:
+            await bot.send_message(chat_id=chat_id, text="Первый вопрос")
+			
         else:
             await bot.send_message(chat_id=chat_id, text="Some problem"+str(quest_state))
 
