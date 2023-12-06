@@ -2,7 +2,7 @@
 import os
 from dotenv import load_dotenv
 from fastapi import FastAPI, Header, HTTPException, Depends
-from telegram import Update, Bot,InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import Update, Bot,ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup
 from pydantic import BaseModel
 
 class TelegramUpdate(BaseModel):
@@ -55,6 +55,9 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
     text = update.message["text"]
     #usname = update.message.from_user.username
     # print("Received message:", update.message)
+    button_hi = KeyboardButton('Привет! 👋')
+    greet_kb = ReplyKeyboardMarkup()
+    greet_kb.add(button_hi)
 
     if text == "/start":
         quest_state=STATE_NAME
@@ -65,7 +68,7 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
         quest_state=quest_state+1
         if quest_state==STATE_GROUP:
             student_name=text
-            await bot.send_message(chat_id=chat_id, text=student_name+", введите группу")
+            await bot.send_message(chat_id=chat_id, text=student_name+", введите группу", reply_markup=kb.greet_kb)
         elif quest_state==STATE_Q1:
             await bot.send_message(chat_id=chat_id, text="Первый вопрос")
 			
