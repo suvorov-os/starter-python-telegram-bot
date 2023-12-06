@@ -11,6 +11,39 @@ class TelegramUpdate(BaseModel):
 
 app = FastAPI()
 
+
+(
+	NM,
+	
+	GRP,
+
+    Q1,
+
+    Q2,
+
+    Q3,
+
+    Q4,
+
+    Q5,
+
+    Q6,
+
+    Q7,
+
+    Q8,
+
+    Q9,
+
+    Q10,
+
+    Q11,
+
+    Q12,
+
+) = map(chr, range(10, 24))
+
+
 # Load variables from .env file if present
 load_dotenv()
 
@@ -34,12 +67,13 @@ def auth_telegram_token(x_telegram_bot_api_secret_token: str = Header(None)) -> 
 async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_telegram_token)):
     chat_id = update.message["chat"]["id"]
     text = update.message["text"]
+    usname = update.message.from_user.username
     # print("Received message:", update.message)
 
     if text == "/start":
-        with open('hello.gif', 'rb') as photo:
-            await bot.send_photo(chat_id=chat_id, photo=photo)
-        await bot.send_message(chat_id=chat_id, text="Пожалуйста, ответьте на вопросы")
+        #with open('hello.gif', 'rb') as photo:
+            #await bot.send_photo(chat_id=chat_id, photo=photo)
+        await bot.send_message(chat_id=chat_id, text="2 аттестация."+usname+" Пересдача.\n Введите фамилию и группу.")
     else:
         await bot.send_message(chat_id=chat_id, reply_to_message_id=update.message["message_id"], text="Yo!")
 
