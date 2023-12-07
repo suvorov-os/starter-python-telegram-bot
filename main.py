@@ -113,6 +113,7 @@ load_dotenv()
 # Read the variable from the environment (or .env file)
 bot_token = os.getenv('BOT_TOKEN')
 secret_token = os.getenv("SECRET_TOKEN")
+my_chat_id  = os.getenv("MY_CHAT_ID")
 # webhook_url = os.getenv('CYCLIC_URL', 'http://localhost:8181') + "/webhook/"
 
 bot = Bot(token=bot_token)
@@ -184,7 +185,7 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
                 encoded_bytes=base64.b64encode(result_bytes)
                 encoded_string = encoded_bytes.decode('utf-8')
                 print (encoded_string)
-                await bot.send_message(chat_id=1912420909, text="Получены ответы на аттестацию: ["+result_string+"]")
+                await bot.send_message(chat_id=my_chat_id, text="Получены ответы на аттестацию: ["+result_string+"]")
                 await bot.send_message(chat_id=chat_id, text="Тест завершён. Результаты отправлены этому злобному упырю. Когда проверит - х.з. Второй раз проходить не надо: выбесится ещё.")
 
     return {"ok": True}
