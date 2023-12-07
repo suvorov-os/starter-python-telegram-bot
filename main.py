@@ -182,7 +182,7 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
             result_string=result_string+usname
             print (result_string)
             result_bytes=result_string.encode('utf-8')
-            encoded_bytes=base64.b16encode(result_bytes)
+            encoded_bytes=base64.b64encode(result_bytes)
             encoded_string = encoded_bytes.decode('utf-8')
             #encoded_string = base64.b64encode(result_string.encode("utf-8")).decode("utf-8")
             print (encoded_string)
