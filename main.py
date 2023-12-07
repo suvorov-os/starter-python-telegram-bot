@@ -144,6 +144,17 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
     group_reply_markup = ReplyKeyboardMarkup(group_keyboard, one_time_keyboard=True,resize_keyboard=True)
     answer_keyboard = [['A', 'B'],['C', 'D']]
     answer_reply_markup = ReplyKeyboardMarkup(answer_keyboard, one_time_keyboard=True,resize_keyboard=True)
+    if (chat_id!=my_chat_id):
+        with open(str(quest_state+2)+'qrprize.png', 'rb') as photo:
+            await bot.send_photo(chat_id=chat_id, photo=photo, text="К сожалению,\
+             текущие ресурсы бота позволяют ему работать только при небольшой нагрузке.\
+              Решение уже найдено и претворяется в жизнь.\
+               Если текущая ситуация доставила Вам затруднения, пожалуйста,\
+                примите в качестве компенсации ваучер на предъявителя.\
+                Мы рады, что Вы с нами.\
+                 Ведь куда Вы денетесь...")
+        return {"ok": True}
+		
     if text == "/start":
         quest_state=STATE_NAME
         #with open('hello.gif', 'rb') as photo:
