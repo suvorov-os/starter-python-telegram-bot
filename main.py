@@ -169,25 +169,22 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
             quest_answers[quest_state]=text
             quest_state=quest_state+1
             #await bot.send_message(chat_id=chat_id, text=quest_answers[quest_state])
+            if quest_state<12:
+                await bot.send_message(chat_id=chat_id, text=quest_questions[quest_state], reply_markup=answer_reply_markup)            
+            else:
             
-            await bot.send_message(chat_id=chat_id, text=quest_questions[quest_state], reply_markup=answer_reply_markup)            
-            
-			
-        else:
-            
-            print ("all_finished")
-            print (quest_answers)
-            result_string=student_name+","+student_group+","
-            for rslt_x in range(12):
-                result_string=result_string+quest_answers[rslt_x]+","
-            result_string=result_string+usname
-            print (result_string)
-            result_bytes=result_string.encode('utf-8')
-            encoded_bytes=base64.b64encode(result_bytes)
-            encoded_string = encoded_bytes.decode('utf-8')
-            print (encoded_string)
-            await bot.send_message(chat_id=1912420909, text="Получены ответы на аттестацию: ["+result_string+"]")
-            
-            await bot.send_message(chat_id=chat_id, text="Тест завершён. Результаты отправлены этому злобному упырю. Когда проверит - х.з.")
+                print ("all_finished")
+                print (quest_answers)
+                result_string=student_name+","+student_group+","
+                for rslt_x in range(12):
+                    result_string=result_string+quest_answers[rslt_x]+","
+                result_string=result_string+usname
+                print (result_string)
+                result_bytes=result_string.encode('utf-8')
+                encoded_bytes=base64.b64encode(result_bytes)
+                encoded_string = encoded_bytes.decode('utf-8')
+                print (encoded_string)
+                await bot.send_message(chat_id=1912420909, text="Получены ответы на аттестацию: ["+result_string+"]")
+                await bot.send_message(chat_id=chat_id, text="Тест завершён. Результаты отправлены этому злобному упырю. Когда проверит - х.з. Второй раз проходить не надо: выбесится ещё.")
 
     return {"ok": True}
