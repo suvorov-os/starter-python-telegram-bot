@@ -148,7 +148,7 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
         await bot.send_message(chat_id=chat_id, text="2 аттестация. Пересдача.\n Введите фамилию.")
     else:
         if quest_state in (2,5,7,11):
-            with open(quest_state+'qpic.jpg', 'rb') as photo:
+            with open(str(quest_state)+'qpic.jpg', 'rb') as photo:
                 await bot.send_photo(chat_id=chat_id, photo=photo)
 			
         print ("state "+ str(quest_state))
