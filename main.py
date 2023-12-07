@@ -28,6 +28,19 @@ STATE_Q10=9
 STATE_Q11=10
 STATE_Q12=11
 student_name=""
+student_group=""
+
+quest_questions=["Листовой узел - а) Узел с наименьшим значением.\n\
+б) Узел с наибольшим значением.\n\
+в) Узел, не имеющий поддеревьев.\n\
+г) Узел, имеющий степень 0.\n",
+"Сколько ячеек памяти соответствующего размера потребуется для записи данного\
+двоичного дерева в массив?\n\
+а) 9\n\
+б) 16\n\
+в) 15\n\
+г) 8",]
+
 
 # Load variables from .env file if present
 load_dotenv()
@@ -51,25 +64,36 @@ def auth_telegram_token(x_telegram_bot_api_secret_token: str = Header(None)) -> 
 @app.post("/webhook/")
 async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_telegram_token)):
     global quest_state
+    global student_name
+    global student_group
+    global quest_answers
     chat_id = update.message["chat"]["id"]
     text = update.message["text"]
     #usname = update.message.from_user.username
     # print("Received message:", update.message)
-    my_keyboard = [['ES', 'EN']]
-    my_reply_markup = ReplyKeyboardMarkup(my_keyboard, one_time_keyboard=True,resize_keyboard=True)
-
+    group_keyboard = [['ОС-27', 'ОС-28'],['СИ-25', 'СИ-26']]
+    group_reply_markup = ReplyKeyboardMarkup(group_keyboard, one_time_keyboard=True,resize_keyboard=True)
+    answer_keyboard = [['А', 'Б'],['В', 'Г']]
     if text == "/start":
         quest_state=STATE_NAME
         #with open('hello.gif', 'rb') as photo:
             #await bot.send_photo(chat_id=chat_id, photo=photo)
         await bot.send_message(chat_id=chat_id, text="2 аттестация. Пересдача.\n Введите фамилию.")
     else:
-        quest_state=quest_state+1
-        if quest_state==STATE_GROUP:
+        if quest_state==STATE_NAME:
             student_name=text
-            await bot.send_message(chat_id=chat_id, text=student_name+", введите группу", reply_markup=my_reply_markup)
-        elif quest_state==STATE_Q1:
-            await bot.send_message(chat_id=chat_id, text="Первый вопрос")
+            quest_state=quest_state+1
+            await bot.send_message(chat_id=chat_id, text=student_name+", введите группу", reply_markup=group_reply_markup)
+        elif quest_state==STATE_GROUP:
+            student_group=text            
+            quest_state=quest_state+1
+            await bot.send_message(chat_id=chat_id, text=quest_questions[quest_state], reply_markup=answer_reply_markup)            
+        elif quest_state<12:
+            quest_answers[quest_state]=text
+            await bot.send_message(chat_id=chat_id, text=quest_answers[quest_state])
+            quest_state=quest_state+1
+            await bot.send_message(chat_id=chat_id, text=quest_questions[quest_state], reply_markup=answer_reply_markup)            
+            
 			
         else:
             await bot.send_message(chat_id=chat_id, text="Some problem"+str(quest_state))
