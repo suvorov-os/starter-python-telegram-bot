@@ -181,7 +181,7 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
                 result_string=result_string+quest_answers[rslt_x]+","
             result_string=result_string+usname
             print (result_string)
-            encoded_string = base64.b64encode(result_string.encode("utf-8")).decode("utf-8")
-            await bot.send_message(chat_id=chat_id, text="Done"+encoded_string)
+            #encoded_string = base64.b64encode(result_string.encode("utf-8")).decode("utf-8")
+            await bot.send_message(chat_id=chat_id, text="Done: "+result_string)
 
     return {"ok": True}
