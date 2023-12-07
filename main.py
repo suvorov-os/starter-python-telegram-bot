@@ -158,7 +158,7 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
         elif quest_state<12:
             quest_answers[quest_state]=text
             quest_state=quest_state+1
-            await bot.send_message(chat_id=chat_id, text=quest_answers[quest_state])
+            #await bot.send_message(chat_id=chat_id, text=quest_answers[quest_state])
             
             await bot.send_message(chat_id=chat_id, text=quest_questions[quest_state], reply_markup=answer_reply_markup)            
             
