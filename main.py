@@ -12,7 +12,7 @@ class TelegramUpdate(BaseModel):
 app = FastAPI()
 
 quest_state=-2
-quest_answers=[5,5,5,5,5,5,5,5,5,5,5,5]
+quest_answers=["","","","","","","","","","","",""]
 STATE_NAME=-2
 STATE_GROUP=-1
 STATE_Q1=0
@@ -130,6 +130,7 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
     global quest_answers
     chat_id = update.message["chat"]["id"]
     text = update.message["text"]
+    print (quest_answers)
     #usname = update.message.from_user.username
     # print("Received message:", update.message)
     group_keyboard = [['ОС-27', 'ОС-28'],['СИ-25', 'СИ-26']]
