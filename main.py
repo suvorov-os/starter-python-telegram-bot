@@ -103,7 +103,7 @@ responsible, goofy, romantic, allow, painful, like, lie, godly?\n\
 A) 0\n\
 B) 3\n\
 C) 5\n\
-D) 2",""
+D) 2","U[mmmm"
 ]
 
 
@@ -137,6 +137,7 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
     print (quest_answers)
     usname = update.message["chat"]["username"]
     print (usname)
+    print (update.message)
     # print("Received message:", update.message)
     group_keyboard = [['ОС-27', 'ОС-28'],['СИ-25', 'СИ-26']]
     group_reply_markup = ReplyKeyboardMarkup(group_keyboard, one_time_keyboard=True,resize_keyboard=True)
@@ -184,7 +185,6 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
             result_bytes=result_string.encode('utf-8')
             encoded_bytes=base64.b64encode(result_bytes)
             encoded_string = encoded_bytes.decode('utf-8')
-            #encoded_string = base64.b64encode(result_string.encode("utf-8")).decode("utf-8")
             print (encoded_string)
             await bot.send_message(chat_id=chat_id, text="Тест завершён. Пожалуйста, скопируйте и отправьте со своего почтового ящика текст в квадратных скобках: ["+encoded_string+"]")
 
