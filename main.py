@@ -5,6 +5,10 @@ from fastapi import FastAPI, Header, HTTPException, Depends
 from telegram import Update, Bot,ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup
 from pydantic import BaseModel
 
+import boto3
+dynamodb = boto3.resource('dynamodb')
+db = dynamodb.Table('motionless-clam-giletCyclicDB')
+
 class TelegramUpdate(BaseModel):
     update_id: int
     message: dict
@@ -143,8 +147,8 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
             #await bot.send_photo(chat_id=chat_id, photo=photo)
         await bot.send_message(chat_id=chat_id, text="2 аттестация. Пересдача.\n Введите фамилию.")
     else:
-        if quest_state==STATE_Q2:
-            with open('q2pic.jpg', 'rb') as photo:
+        if quest_state in (2,5,7,11):
+            with open(quest_state+'qpic.jpg', 'rb') as photo:
                 await bot.send_photo(chat_id=chat_id, photo=photo)
 			
         print ("state "+ str(quest_state))
