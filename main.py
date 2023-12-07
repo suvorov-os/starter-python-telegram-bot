@@ -5,9 +5,9 @@ from fastapi import FastAPI, Header, HTTPException, Depends
 from telegram import Update, Bot,ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup
 from pydantic import BaseModel
 
-import boto3
-dynamodb = boto3.resource('dynamodb')
-db = dynamodb.Table('motionless-clam-giletCyclicDB')
+#import boto3
+#dynamodb = boto3.resource('dynamodb')
+#db = dynamodb.Table('motionless-clam-giletCyclicDB')
 
 class TelegramUpdate(BaseModel):
     update_id: int
