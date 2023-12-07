@@ -143,6 +143,10 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
             #await bot.send_photo(chat_id=chat_id, photo=photo)
         await bot.send_message(chat_id=chat_id, text="2 аттестация. Пересдача.\n Введите фамилию.")
     else:
+        if quest_state==STATE_Q2:
+            with open('q2pic.jpg', 'rb') as photo:
+                await bot.send_photo(chat_id=chat_id, photo=photo)
+			
         print ("state "+ str(quest_state))
         if quest_state>-1:
             print (quest_questions[quest_state])
@@ -165,5 +169,7 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
 			
         else:
             await bot.send_message(chat_id=chat_id, text="Some problem"+str(quest_state))
+            print ("all_finished")
+            print (quest_answers)
 
     return {"ok": True}
