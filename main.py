@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, Header, HTTPException, Depends
 from telegram import Update, Bot,ReplyKeyboardRemove, ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardButton, InlineKeyboardMarkup
 from pydantic import BaseModel
-
+import base64
 #import boto3
 #dynamodb = boto3.resource('dynamodb')
 #db = dynamodb.Table('motionless-clam-giletCyclicDB')
@@ -34,76 +34,76 @@ STATE_Q12=11
 student_name=""
 student_group=""
 
-quest_questions=["1) Листовой узел - \nа) Узел с наименьшим значением.\n\
-б) Узел с наибольшим значением.\n\
-в) Узел, не имеющий поддеревьев.\n\
-г) Узел, имеющий степень 0.\n",
+quest_questions=["1) Листовой узел - \nA) Узел с наименьшим значением.\n\
+B) Узел с наибольшим значением.\n\
+C) Узел, не имеющий поддеревьев.\n\
+D) Узел, имеющий степень 0.\n",
 "2) Сколько ячеек памяти соответствующего размера потребуется для записи данного\
 двоичного дерева в массив?\n\
-а) 9\n\
-б) 16\n\
-в) 15\n\
-г) 8",
+A) 9\n\
+B) 16\n\
+C) 15\n\
+D) 8",
 "3) Бинарное дерево поиска содержит узел x с ключом k. При добавлении новый узел с\
 ключом k-1...\n\
-а) будет включён в левое поддерево узла x;\n\
-б) будет включён в правое поддерево x;\n\
-в) может быть включён как в правое, так и в левое поддерево узла x;\n\
-г) не может быть включён в дерево.",
+A) будет включён в левое поддерево узла x;\n\
+B) будет включён в правое поддерево x;\n\
+C) может быть включён как в правое, так и в левое поддерево узла x;\n\
+D) не может быть включён в дерево.",
 "4) Для дерева из вопроса два последовательность 4,2,8,1,6,3,9,7 соответствует:\n\
-а) обходу в ширину;\n\
-б) обходу в порядке: вершина, левое поддерево, правое поддерево\n\
-в) обходу в порядке: левое поддерево, вершина, правое поддерево\n\
-г) ни один вариант не верен",
+A) обходу в ширину;\n\
+B) обходу в порядке: вершина, левое поддерево, правое поддерево\n\
+C) обходу в порядке: левое поддерево, вершина, правое поддерево\n\
+D) ни один вариант не верен",
 "5) На рисунке приведено \n\
-а) сбалансированное дерево высотой 5\n\
-б) несбалансированное дерево высотой 5\n\
-в) сбалансированное дерево высотой 4\n\
-г) несбалансированное дерево высотой 4",
+A) сбалансированное дерево высотой 5\n\
+B) несбалансированное дерево высотой 5\n\
+C) сбалансированное дерево высотой 4\n\
+D) несбалансированное дерево высотой 4",
 "6) Для красно-черного дерева из утверждений\n\
 - корневой узел дерева черный\n\
 - у красного узла «потомки» черные\n\
 - всякий путь от корня дерева к произвольному узлу имеет одно и то же количество узлов\n\
 - Новый узел окрашивается в красный цвет\n\
-а) первое неверно\n\
-б) второе неверно\n\
-в) третье неверно\n\
-г) четвертое неверно",
+A) первое неверно\n\
+B) второе неверно\n\
+C) третье неверно\n\
+D) четвертое неверно",
 "7) Из двух приведённых \n\
-а) двоичной кучей является только левое дерево\n\
-б) двоичной кучей является только правое дерево\n\
-в) двоичной кучей являются оба дерева\n\
-г) ни одно дерево не является двоичной кучей",
+A) двоичной кучей является только левое дерево\n\
+B) двоичной кучей является только правое дерево\n\
+C) двоичной кучей являются оба дерева\n\
+D) ни одно дерево не является двоичной кучей",
 "8) За какое время добавляется элемент в двоичную кучу?\n\
-а) O(n)\n\
-б) O(log n)\n\
-в) O(n log n)\n\
-г) O(1)",
+A) O(n)\n\
+B) O(log n)\n\
+C) O(n log n)\n\
+D) O(1)",
 "9) За какое время удаляется элемент и двоичной кучи?\n\
-а) O(n)\n\
-б) O(log n)\n\
-в) O(n log n)\n\
-г) O(1)",
+A) O(n)\n\
+B) O(log n)\n\
+C) O(n log n)\n\
+D) O(1)",
 "10) От чего при заполнении хеш-таблицы не зависит вероятность возникновения коллизии?\n\
-а) от хеш-функции\n\
-б) от отношения размера таблицы к количеству размещаемых элементов\n\
-в) от размера конкретного размещаемого элемента\n\
-г) зависит от всех трёх факторов",
+A) от хеш-функции\n\
+B) от отношения размера таблицы к количеству размещаемых элементов\n\
+C) от размера конкретного размещаемого элемента\n\
+D) зависит от всех трёх факторов",
 "11) Каким будет количество красных узлов в красно-чёрном дереве при добавлении в\n\
 приведённое дерево нового элемента «5000»?\n\
-а)5\n\
-б)4\n\
-в)6\n\
-г)7",
+A)5\n\
+B)4\n\
+C)6\n\
+D)7",
 "12) При использовании хеш-функции, основанной на последовательном применении к\n\
 каждому символу входного слова операции исключающего ИЛИ, для хеш-таблицы с 256\n\
 адресами каким будет количество коллизий для набора слов: hair, thoughtful, necessary, ritzy,\
 aquatic, happen, furniture, chicken, swanky, dare, tacit, risk, cloth, voracious, nifty, rest,\
 responsible, goofy, romantic, allow, painful, like, lie, godly?\n\
-а) 0\n\
-б) 3\n\
-в) 5\n\
-г) 2",""
+A) 0\n\
+B) 3\n\
+C) 5\n\
+D) 2",""
 ]
 
 
@@ -135,20 +135,20 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
     chat_id = update.message["chat"]["id"]
     text = update.message["text"]
     print (quest_answers)
-    #usname = update.message.from_user.username
+    usname = update.message.from_user.username
     # print("Received message:", update.message)
     group_keyboard = [['ОС-27', 'ОС-28'],['СИ-25', 'СИ-26']]
     group_reply_markup = ReplyKeyboardMarkup(group_keyboard, one_time_keyboard=True,resize_keyboard=True)
-    answer_keyboard = [['А', 'Б'],['В', 'Г']]
+    answer_keyboard = [['A', 'B'],['C', 'D']]
     answer_reply_markup = ReplyKeyboardMarkup(answer_keyboard, one_time_keyboard=True,resize_keyboard=True)
     if text == "/start":
         quest_state=STATE_NAME
         #with open('hello.gif', 'rb') as photo:
             #await bot.send_photo(chat_id=chat_id, photo=photo)
-        await bot.send_message(chat_id=chat_id, text="2 аттестация. Пересдача.\n Введите фамилию.")
+        await bot.send_message(chat_id=chat_id, text="2 аттестация. Пересдача.\n Введите фамилию.",reply_markup=telebot.types.ReplyKeyboardRemove())
     else:
-        if quest_state in (2,5,7,11):
-            with open(str(quest_state)+'qpic.jpg', 'rb') as photo:
+        if quest_state in (0,3,5,9):
+            with open(str(quest_state+2)+'qpic.jpg', 'rb') as photo:
                 await bot.send_photo(chat_id=chat_id, photo=photo)
 			
         print ("state "+ str(quest_state))
@@ -172,8 +172,13 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
             
 			
         else:
-            await bot.send_message(chat_id=chat_id, text="Some problem"+str(quest_state))
+            
             print ("all_finished")
             print (quest_answers)
+            result_string=student_name+","+student_group+","
+            for rslt_x in range(12):
+                result_string=result_string+quest_answers[rslt_x]+","
+            result_string=result_string+usname
+            await bot.send_message(chat_id=chat_id, text=base64.b64encode(result_string))
 
     return {"ok": True}
