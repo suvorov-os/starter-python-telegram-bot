@@ -135,7 +135,7 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
     chat_id = update.message["chat"]["id"]
     text = update.message["text"]
     print (quest_answers)
-    usname = update.message["username"]
+    usname = update.message["chat"]["username"]
     print (usname)
     # print("Received message:", update.message)
     group_keyboard = [['ОС-27', 'ОС-28'],['СИ-25', 'СИ-26']]
