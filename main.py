@@ -78,6 +78,7 @@ async def handle_webhook(update: TelegramUpdate, token: str = Depends(auth_teleg
     group_keyboard = [['ОС-27', 'ОС-28'],['СИ-25', 'СИ-26']]
     group_reply_markup = ReplyKeyboardMarkup(group_keyboard, one_time_keyboard=True,resize_keyboard=True)
     answer_keyboard = [['А', 'Б'],['В', 'Г']]
+    answer_reply_markup = ReplyKeyboardMarkup(answer_keyboard, one_time_keyboard=True,resize_keyboard=True)
     if text == "/start":
         quest_state=STATE_NAME
         #with open('hello.gif', 'rb') as photo:
